@@ -35,8 +35,8 @@ def status_calc(status, pay):
     return status
 
 def total_pay_converter(pay):
-    if pay < 100: return pay * 40 * 52
-    elif pay < 1000: return pay * 26
+    if pay < 100: return (pay * 40 * 52)
+    elif pay < 1000: return (pay * 26)
     return pay
 
 def encode_prediction(val, X1enc, X1dec, X2enc, X2dec):

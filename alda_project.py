@@ -43,9 +43,11 @@ with open('Salaries_new.csv', 'w') as csvfile:
 			job=row['JobTitle'].lower()
 			year=row['Year']
 			temp_salary=row['TotalPayBenefits']
+			print temp_salary
 			salary = total_pay_converter( inflation(float(temp_salary), float(year)))
+			print salary
 			status=row['Status']
-			if job in my_dict.keys() and salary!= None and job!='not provided' and job!= '':
+			if job in my_dict.keys() and salary!= None and salary>1000 and job!='not provided' and job!= '':
 				if(status==''):
 					if(salary < my_dict[job][3]):
 						status='PT'
@@ -53,6 +55,6 @@ with open('Salaries_new.csv', 'w') as csvfile:
 						status='FT'
 
 				writer.writerow({'JobTitle': job, 'Salary': salary , 'Status': status })
-				print job, salary, status
+				#print job, salary, status
 
 		 
