@@ -18,13 +18,32 @@ with open('Salaries.csv') as csvfile:
 		if(my_dict[key] <= 2):
 			del my_dict[key]
 		my_dict[key][3]=float(my_dict[key][3])/float(my_dict[key][2])
+
 		#fill status
-	for row in reader:
-		if row['JobTitle'].lower() in my_dict.keys():
-			if(my_dict['JobTitle'][1]==''):
-				if(row['TotalPayBenefits'] < my_dict[row['JobTitle']][3]):
-					my_dict['JobTitle'][1]='PT'
-				else:
-					my_dict['JobTitle'][1]='FT'
-print my_dict
-		
+
+			#print my_dict[temp]
+job=''
+salary=0.0
+status=''
+
+with open('Salaries_new.csv', 'w') as csvfile:
+    fieldnames = ['JobTitle', 'Salary','Status']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+
+    with open('Salaries.csv') as csvfile:
+		reader = csv.DictReader(csvfile)
+		for row in reader:
+			job=row['JobTitle'].lower()
+			salary=row['TotalPayBenefits']
+			status=row['Status']
+			if job in my_dict.keys():
+				if(status==''):
+					if(salary < my_dict[job][3]):
+						status='PT'
+					else:
+						status='FT'
+				writer.writerow({'JobTitle': job, 'Salary': salary , 'Status': status })
+				print job, salary, status
+
+		 
