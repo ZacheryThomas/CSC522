@@ -1,4 +1,6 @@
 import csv
+from Helper_Functions import *
+
 with open('Salaries.csv') as csvfile:
 	reader = csv.DictReader(csvfile)
 	my_dict={}
@@ -6,11 +8,15 @@ with open('Salaries.csv') as csvfile:
 	count=0
 	# Adding to dict
 	for row in reader:
+		year=row['Year']
+		temp_salary=row['TotalPayBenefits']
+		salary=total_pay_converter(inflation(float(temp_salary), float(year)))
+
 		if row['JobTitle'].lower() in my_dict.keys():
 			my_dict[row['JobTitle'].lower()][2] += 1
-			my_dict[row['JobTitle'].lower()][3] = float(my_dict[row['JobTitle'].lower()][3])+float(row['TotalPayBenefits'])
+			my_dict[row['JobTitle'].lower()][3] = float(my_dict[row['JobTitle'].lower()][3]) + salary
 		else:
-			my_list=[row['TotalPayBenefits'],row['Status'].upper(),1,float(row['TotalPayBenefits'])]
+			my_list=[row['TotalPayBenefits'],row['Status'].upper(),1, salary]
 			my_dict[row['JobTitle'].lower()] = my_list
 			#print row['Status']
 	#removing uncommon and calculating avg
@@ -35,14 +41,17 @@ with open('Salaries_new.csv', 'w') as csvfile:
 		reader = csv.DictReader(csvfile)
 		for row in reader:
 			job=row['JobTitle'].lower()
-			salary=row['TotalPayBenefits']
+			year=row['Year']
+			temp_salary=row['TotalPayBenefits']
+			salary = total_pay_converter( inflation(float(temp_salary), float(year)))
 			status=row['Status']
-			if job in my_dict.keys():
+			if job in my_dict.keys() and salary!= None and job!='not provided' and job!= '':
 				if(status==''):
 					if(salary < my_dict[job][3]):
 						status='PT'
 					else:
 						status='FT'
+
 				writer.writerow({'JobTitle': job, 'Salary': salary , 'Status': status })
 				print job, salary, status
 

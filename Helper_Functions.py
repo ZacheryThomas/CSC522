@@ -7,7 +7,7 @@ def unique_jobs_count(jobs):
     return len(job_dict)
 
 def inflation(value, year):
-    inflation = 0
+    inflation = 1
     if year == 2011: inflation = 1.07;
     if year == 2012: inflation = 1.05;
     if year == 2013: inflation = 1.04;
